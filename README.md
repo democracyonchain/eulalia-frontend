@@ -67,11 +67,7 @@ npm run dev
 
 **David Tacuri** – Project Lead
 
----
 
-## 📜 Licencia
-
-Este proyecto aún no tiene una licencia pública. Uso interno durante el desarrollo.
 
 ---
 
@@ -140,6 +136,3 @@ npm run dev
 
 ---
 
-## 📜 License
-
-This project does not yet have a public license. Internal use during development.
