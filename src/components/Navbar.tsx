@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#eee' }}>
       <div>
-        <strong>Eulalia</strong>
+        <strong>Digital voter ID</strong>
       </div>
       <div>
         {isAuthenticated && (

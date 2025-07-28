@@ -56,19 +56,22 @@ function LoginPage() {
 
         {error && <p className="text-sm text-red-600 text-center">{error}</p>}
 
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition"
-        >
-          Iniciar sesión
-        </button>
+       <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+  <button
+    onClick={handleLogin}
+    className="btn-primary"
+  >
+    Iniciar sesión
+  </button>
 
-        <button
-          onClick={() => navigate('/solicitud-organizacion')}
-          className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-md text-sm"
-        >
-          Solicitar Registro como Partido
-        </button>
+  <button
+    onClick={() => navigate('/solicitud-organizacion')}
+    className="btn-primary"
+  >
+    Solicitar Registro como Partido
+  </button>
+</div>
+
       </div>
 
     </div>

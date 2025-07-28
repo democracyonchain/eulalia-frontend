@@ -1,22 +1,21 @@
 import { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-import LoginPage from "./pages/LoginPage";
+import { jwtDecode } from "jwt-decode";
+
 import Navbar from "./components/Navbar";
 
+
+import LoginPage from "./pages/LoginPage";
 import OrganismoHomePage from './pages/organismo/HomePage';
 import PartidoHomePage from './pages/partido/HomePage';
 import CiudadanoHomePage from './pages/ciudadano/HomePage';
 import AdminHomePage from './pages/admin/HomePage';
-import SolicitudOrganizacionPage from './pages/public/SolicitudOrganizacionPage'
-
-
-import { jwtDecode } from "jwt-decode";
+import SolicitudOrganizacionPage from './pages/public/SolicitudOrganizacionPage';
 
 function App() {
   const { isAuthenticated, token, isLoading } = useContext(AuthContext);
 
-  // Calcula ruta según el rol
   let rutaPorRol = "/login";
   if (isAuthenticated && token) {
     try {
@@ -49,7 +48,11 @@ function App() {
         <Routes>
           <Route path="/" element={isAuthenticated ? <Navigate to={rutaPorRol} /> : <Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminHomePage />} />
+
+          {/* ADMIN con layout */}
+          <Route path="/admin" element={<AdminHomePage />}/>
+           
+
           <Route path="/organismo" element={<OrganismoHomePage />} />
           <Route path="/partido" element={<PartidoHomePage />} />
           <Route path="/ciudadano" element={<CiudadanoHomePage />} />
