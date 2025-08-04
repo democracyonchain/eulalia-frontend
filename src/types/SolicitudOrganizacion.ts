@@ -2,13 +2,14 @@ export interface SolicitudOrganizacionForm {
   nombre: string;
   tipo_organizacion: string;
   codigo_provincia: string;
-  codigo_canton: string;
-  codigo_parroquia: string;
+  codigo_canton: number;
+  codigo_parroquia: number;
   responsable_cedula: string;
   responsable_nombre: string;
   responsable_apellido: string;
   responsable_fechaNacimiento: string;
   responsable_direccion: string;
   responsable_telefono: string;
+  responsable_email: string;
   observaciones: string;
 }

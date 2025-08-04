@@ -1,4 +1,5 @@
-/* Global Styles */
+@import "tailwindcss";
+/* Estilos Globales */
 :root {
   font-family: 'Segoe UI', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -78,33 +79,7 @@ button:hover {
   font-weight: bold;
 }
 
-
-/* Estilos para el sidebar */
-aside {
-  position: fixed; /* Fija el sidebar a la izquierda */
-  top: 0;
-  left: 0;
-  height: 100vh; /* Altura completa de la pantalla */
-  z-index: 10; /* Asegura que el sidebar esté encima del contenido */
-}
-
-/* Estilos para el contenido principal */
-main {
-  margin-left: 64px; /* Espacio para dejar lugar al sidebar */
-  padding: 2rem;
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-  aside {
-    display: none; /* Oculta el sidebar en pantallas pequeñas */
-  }
-  main {
-    margin-left: 0; /* Elimina el margen cuando el sidebar está oculto */
-  }
-}
-
-/* Estilos para el sidebar */
+/* Estilos para el Layout Principal (Sidebar + Contenido) */
 aside {
   position: fixed; /* Fija el sidebar a la izquierda */
   top: 0;
@@ -114,9 +89,17 @@ aside {
   width: 64px; /* Ancho fijo para el sidebar */
 }
 
-/* Estilos para el contenido principal */
 main {
   margin-left: 64px; /* Espacio para dejar lugar al sidebar */
   padding: 2rem;
 }
 
+/* Responsividad para el layout */
+@media (max-width: 768px) {
+  aside {
+    display: none; /* Oculta el sidebar en pantallas pequeñas */
+  }
+  main {
+    margin-left: 0; /* Elimina el margen cuando el sidebar está oculto */
+  }
+}

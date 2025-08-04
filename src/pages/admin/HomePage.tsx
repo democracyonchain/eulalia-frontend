@@ -1,5 +1,3 @@
-// src/pages/admin/HomePage.tsx
-
 import { useEffect, useState } from "react";
 import { fetchParametros, updateParametro } from "../../services/configurationService";
 import type { ParametroSistema } from "../../types/Configuration";
@@ -26,7 +24,19 @@ export function AdminHomePage() {
   const handleUpdate = async (clave: string) => {
     try {
       const nuevoValor = valores[clave];
-      await updateParametro(clave, nuevoValor);
+      const original = parametros.find(p => p.parametroId === clave);
+
+      if (!original) {
+        alert("No se encontró el parámetro.");
+        return;
+      }
+
+      const actualizado: ParametroSistema = {
+        ...original,
+        valor: nuevoValor,
+      };
+
+      await updateParametro(actualizado);
       alert("Parámetro actualizado correctamente.");
     } catch (error) {
       console.error(error);
@@ -35,103 +45,139 @@ export function AdminHomePage() {
   };
 
   const renderInput = (param: ParametroSistema) => {
-    const commonProps = {
-      className: "border border-gray-300 rounded px-2 py-1 w-full text-sm",
-      value: valores[param.parametroId] || "",
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setValores({ ...valores, [param.parametroId]: e.target.value }),
-    };
+    const value = valores[param.parametroId];
+    const tipoOriginal = param.tipo.toLowerCase();
 
-    switch (param.tipo) {
-      case "boolean":
-        return (
-          <select
-            className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
-            value={valores[param.parametroId] || "false"}
-            onChange={(e) =>
-              setValores({ ...valores, [param.parametroId]: e.target.value })
-            }
-          >
-            <option value="true">Verdadero</option>
-            <option value="false">Falso</option>
-          </select>
-        );
-      default:
-        return <input type={param.tipo === "number" ? "number" : "text"} {...commonProps} />;
+    const tipoNormalizado =
+      tipoOriginal === "booleano" ? "boolean" :
+      tipoOriginal === "numero" || tipoOriginal === "numérico" ? "number" :
+      tipoOriginal;
+
+    if (tipoNormalizado === "boolean") {
+      return (
+        <input
+          type="checkbox"
+          checked={value === "true"}
+          onChange={(e) =>
+            setValores({
+              ...valores,
+              [param.parametroId]: e.target.checked.toString(),
+            })
+          }
+          className="w-5 h-5"
+        />
+      );
     }
+
+    if (tipoNormalizado === "number") {
+      return (
+        <input
+          type="number"
+          value={value || ""}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setValores({ ...valores, [param.parametroId]: e.target.value })
+          }
+          className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+        />
+      );
+    }
+
+    return (
+      <input
+        type="text"
+        value={value || ""}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValores({ ...valores, [param.parametroId]: e.target.value })
+        }
+        className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+      />
+    );
   };
 
   const tabs = [
-    { key: "configuracion_general", label: "CONFIGURACION GENERAL", icon: <Globe size={16} /> },
+    { key: "configuracion_general", label: "CONFIGURACIÓN GENERAL", icon: <Globe size={16} /> },
     { key: "seguridad", label: "SEGURIDAD", icon: <ShieldCheck size={16} /> },
-    { key: "parametros_sistema", label: "PARAMETROS SISTEMA", icon: <Code size={16} /> },
+    { key: "parametros_sistema", label: "PARÁMETROS SISTEMA", icon: <Code size={16} /> },
     { key: "tema_visual", label: "TEMA VISUAL" },
-    { key: "afiliacion", label: "AFILIACION" },
+    { key: "afiliacion", label: "AFILIACIÓN" },
     { key: "ssi", label: "SSI" },
-    { key: "comunicacion", label: "COMUNICACION" },
+    { key: "comunicacion", label: "COMUNICACIÓN" },
   ];
 
+  const tableHeaders = [
+    { key: "parametroId", label: "Parámetro" },
+    { key: "valor", label: "Valor", className: "w-1/3" },
+    { key: "tipo", label: "Tipo" },
+    { key: "descripcion", label: "Descripción" },
+    { key: "accion", label: "Acción" },
+  ];
+
+  const filteredData = parametros.filter((param) => param.seccion === activeTab);
+
   return (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-    <h1 className="text-3xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
 
-    <div className="flex flex-wrap gap-2 mb-6">
-      {tabs.map((tab) => (
-        <button
-          key={tab.key}
-          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${
-            activeTab === tab.key
-              ? "bg-blue-800 text-white shadow"
-              : "bg-blue-100 text-gray-800 hover:bg-blue-200"
-          }`}
-          onClick={() => setActiveTab(tab.key)}
-        >
-          {tab.icon}
-          {tab.label}
-        </button>
-      ))}
-    </div>
+      <div className="flex flex-wrap gap-2 mb-6 border rounded-md bg-gray-50 p-2 shadow-inner">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${
+              activeTab === tab.key
+                ? "bg-blue-700 text-white shadow"
+                : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50"
+            }`}
+            onClick={() => setActiveTab(tab.key)}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-    <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Parámetro</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Valor</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Tipo</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Descripción</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Acción</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-100">
-          {parametros
-            .filter((param) => param.seccion === activeTab)
-            .map((param) => (
-              <tr key={param.parametroId} className="hover:bg-gray-50">
-                <td className="px-4 py-2 text-sm text-gray-700">{param.parametroId}</td>
-                <td className="px-4 py-2">{renderInput(param)}</td>
-                <td className="px-4 py-2 text-sm text-gray-600">{param.tipo}</td>
-                <td className="px-4 py-2 text-sm text-gray-600">{param.descripcion}</td>
-                <td className="px-4 py-2">
-                  <button
-                    onClick={() => handleUpdate(param.parametroId)}
-                    className="bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium px-3 py-1.5 rounded-md"
+      <div className="bg-white rounded-lg shadow-md overflow-x-auto">
+        {filteredData.length === 0 ? (
+          <p className="p-4 text-sm text-gray-500">No hay parámetros en esta sección.</p>
+        ) : (
+          <table className="min-w-full table-auto border-collapse">
+            <thead className="bg-gray-100 border-b border-gray-300">
+              <tr>
+                {tableHeaders.map((header) => (
+                  <th
+                    key={header.key}
+                    className={`px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wide ${header.className || ''}`}
                   >
-                    Actualizar
-                  </button>
-                </td>
+                    {header.label}
+                  </th>
+                ))}
               </tr>
-            ))}
-        </tbody>
-      </table>
-
-      {parametros.filter((p) => p.seccion === activeTab).length === 0 && (
-        <p className="p-4 text-sm text-gray-500">No hay parámetros en esta sección.</p>
-      )}
+            </thead>
+            <tbody>
+              {filteredData.map((param, index) => (
+                <tr
+                  key={param.parametroId || index}
+                  className="hover:bg-gray-50 transition-colors border-b"
+                >
+                  <td className="px-4 py-2 text-sm font-medium text-gray-800">{param.parametroId}</td>
+                  <td className="px-4 py-2">{renderInput(param)}</td>
+                  <td className="px-4 py-2 text-sm text-gray-600">{param.tipo}</td>
+                  <td className="px-4 py-2 text-sm text-gray-600">{param.descripcion || "-"}</td>
+                  <td className="px-4 py-2 text-center">
+                    <button
+                      onClick={() => handleUpdate(param.parametroId)}
+                      className="bg-blue-700 hover:bg-blue-800 text-white text-sm px-4 py-2 rounded-md transition"
+                    >
+                      Actualizar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
-  </div>
-);
-
+  );
 }
 
 export default AdminHomePage;

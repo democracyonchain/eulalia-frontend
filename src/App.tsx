@@ -4,14 +4,25 @@ import { AuthContext } from "./context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 
 import Navbar from "./components/Navbar";
-
+import MainLayout from "./components/Layouts/MainLayout";
 
 import LoginPage from "./pages/LoginPage";
 import OrganismoHomePage from './pages/organismo/HomePage';
-import PartidoHomePage from './pages/partido/HomePage';
 import CiudadanoHomePage from './pages/ciudadano/HomePage';
+import PartidoHomePage from './pages/partido/HomePage';
 import AdminHomePage from './pages/admin/HomePage';
 import SolicitudOrganizacionPage from './pages/public/SolicitudOrganizacionPage';
+import SolicitudesPage from "./pages/organismo/solicitudes/SolicitudesPage";
+import UsuariosPage from "./pages/organismo/usuarios/UsuariosPage";
+import ReportesPage from "./pages/organismo/reportes/ReportesPage";
+import OrganismoLayout from "./components/Layouts/Organismo/OrganismoLayout";
+import CrearAnalistaPage from "./pages/organismo/usuarios/CrearAnalistaPage";
+import PartidoLayout from "./components/Layouts/Partido/PartidoLayout";
+import InformacionPage from "./components/Layouts/Partido/InformacionPage";
+import AfiliadosPage from "./components/Layouts/Partido/AfiliadosPage";
+import DirectivaPage from "./components/Layouts/Partido/DirectivaPage";
+import DocumentosPage from "./components/Layouts/Partido/DocumentosPage";
+import ReportePartidoPage from "./components/Layouts/Partido/ReportesPage";
 
 function App() {
   const { isAuthenticated, token, isLoading } = useContext(AuthContext);
@@ -44,19 +55,37 @@ function App() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: '2rem' }}>
+      <div className="h-full">
         <Routes>
+          {/* Rutas públicas que no usan el layout principal */}
           <Route path="/" element={isAuthenticated ? <Navigate to={rutaPorRol} /> : <Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
-
-          {/* ADMIN con layout */}
-          <Route path="/admin" element={<AdminHomePage />}/>
-           
-
-          <Route path="/organismo" element={<OrganismoHomePage />} />
-          <Route path="/partido" element={<PartidoHomePage />} />
-          <Route path="/ciudadano" element={<CiudadanoHomePage />} />
           <Route path="/solicitud-organizacion" element={<SolicitudOrganizacionPage />} />
+
+          {/* Agrupamos las rutas protegidas que compartirán el layout */}
+          <Route element={<MainLayout />}>
+            <Route path="/admin" element={<AdminHomePage />} />
+            <Route path="/ciudadano" element={<CiudadanoHomePage />} />
+          </Route>
+          {/* Sección Partido - Layout separado */}
+          <Route path="/partido" element={<PartidoLayout />}>
+            <Route index element={<PartidoHomePage />} />
+            <Route path="informacion" element={<InformacionPage />} />
+            <Route path="afiliados" element={<AfiliadosPage />} />
+            <Route path="directiva" element={<DirectivaPage />} />
+            <Route path="documentos" element={<DocumentosPage />} />
+            <Route path="reportes" element={<ReportePartidoPage />} />
+          </Route>
+          {/* Sección Organismo - Layout separado */}
+          <Route path="/organismo" element={<OrganismoLayout />}>
+            <Route index element={<OrganismoHomePage />} />
+            <Route path="solicitudes" element={<SolicitudesPage />} />
+            <Route path="usuarios">
+              <Route index element={<UsuariosPage />} />
+              <Route path="crear" element={<CrearAnalistaPage />} />
+            </Route>
+            <Route path="reportes" element={<ReportesPage />} />
+          </Route>
         </Routes>
       </div>
     </>

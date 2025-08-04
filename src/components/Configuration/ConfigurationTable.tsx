@@ -65,7 +65,7 @@ const ConfigurationTable: React.FC<Props> = ({ parametros, setParametros }) => {
 
     setSaving(param.parametroId);
     try {
-      await updateParametro(param.parametroId, param.valor);
+      await updateParametro(param);
       alert(`✅ Parámetro "${param.parametroId}" actualizado.`);
     } catch (err) {
       console.error(err);

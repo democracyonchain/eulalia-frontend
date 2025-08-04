@@ -2,19 +2,14 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}"
   ],
-  darkMode: 'class',
   theme: {
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: '1rem',
-        sm: '2rem',
-        lg: '4rem',
-      },
-    },
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#1e40af", // Azul institucional
+      }
+    }
   },
-  plugins: [],
-}
+  plugins: [], // ← Faltaba esta coma antes de plugins
+};

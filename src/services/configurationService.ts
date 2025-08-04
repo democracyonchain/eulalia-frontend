@@ -13,6 +13,6 @@ export const fetchParametros = async (): Promise<ParametroSistema[]> => {
   return res.data;
 };
 
-export const updateParametro = async (clave: string, nuevoValor: string) => {
-  return axiosInstance.put(`/Parametrosistema/${clave}`, { valor: nuevoValor });
+export const updateParametro = async (parametro: ParametroSistema) => {
+  return axiosInstance.put(`/parametrosistema/${parametro.parametroId}`, parametro);
 };
