@@ -25,3 +25,4 @@ dist-ssr
 
 # Agent workflows and skills
 .agent/
+.reportsAgents/
