@@ -73,6 +73,7 @@ function LoginPage() {
 </div>
 
       </div>
+      <p style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.8rem', color: '#888' }}>fase2</p>
 
     </div>
   );

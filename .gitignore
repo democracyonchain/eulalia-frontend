@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Agent workflows and skills
+.agent/
+.reportsAgents/
+.requirements/
