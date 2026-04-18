@@ -1,4 +1,4 @@
 export interface Provincia {
-  codigo_Provincia: number;
+  codigo: number;
   nombre: string;
 }

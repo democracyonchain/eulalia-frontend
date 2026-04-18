@@ -1,105 +1,65 @@
 @import "tailwindcss";
-/* Estilos Globales */
+
+@theme {
+  --color-brand-primary: #0f172a;
+  /* Slate 900 - Serious, Dark Blue */
+  --color-brand-secondary: #334155;
+  /* Slate 700 */
+  --color-brand-accent: #2563eb;
+  /* Blue 600 - Standard Corporate Link/Action */
+  --color-brand-bg: #f8fafc;
+  /* Slate 50 - Very clean light grey */
+
+  --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Institutional Base Styles */
 :root {
-  font-family: 'Segoe UI', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: var(--font-sans);
+  line-height: 1.6;
   font-weight: 400;
-  color: #1a1a1a;
-  background-color: #f9f9f9;
-}
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  --bg-page: #f1f5f9;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
 
-body, html {
-  width: 100%;
-  height: 100%;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
 }
 
 body {
-  margin: 0;
-  font-family: 'Segoe UI', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: #1a1a1a;
-  background-color: #f9f9f9;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
 }
 
-
-a {
-  color: #1e40af;
-  text-decoration: none;
+/* Enterprise Card Utility */
+.inst-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  /* Standard, not too rounded */
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  transition: all 0.2s ease-in-out;
 }
 
-a:hover {
-  color: #1d4ed8;
+.inst-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+}
+
+/* Typography Overrides for Professionalism */
+h1,
+h2,
+h3 {
+  color: var(--color-brand-primary);
+  letter-spacing: -0.01em;
+  font-weight: 600;
 }
 
 button {
   border-radius: 6px;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
+  /* slightly squarer */
   font-weight: 500;
-  background-color: #1e40af;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #1d4ed8;
-}
-
-/* Explicit Styles for Navigation Menu */
-.nav {
-  display: flex;
-  flex-direction: column; /* Ensures vertical layout */
-  gap: 0.5rem; /* Spacing between menu items */
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.nav-link:hover {
-  background-color: #f0f0f0;
-}
-
-.nav-link.active {
-  background-color: #e0e0e0;
-  font-weight: bold;
-}
-
-/* Estilos para el Layout Principal (Sidebar + Contenido) */
-aside {
-  position: fixed; /* Fija el sidebar a la izquierda */
-  top: 0;
-  left: 0;
-  height: 100vh; /* Altura completa de la pantalla */
-  z-index: 10; /* Asegura que el sidebar esté encima del contenido */
-  width: 64px; /* Ancho fijo para el sidebar */
-}
-
-main {
-  margin-left: 64px; /* Espacio para dejar lugar al sidebar */
-  padding: 2rem;
-}
-
-/* Responsividad para el layout */
-@media (max-width: 768px) {
-  aside {
-    display: none; /* Oculta el sidebar en pantallas pequeñas */
-  }
-  main {
-    margin-left: 0; /* Elimina el margen cuando el sidebar está oculto */
-  }
 }
