@@ -1,10 +1,11 @@
-import { createContext,  useEffect, useState, type ReactNode } from 'react';
+import { createContext, useEffect, useState, type ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
 interface AuthContextType {
   token: string | null;
   rol: string | null;
-   organizacionId: number | null;
+  organizacionId: number | null;
+  cedula: string | null;
   login: (token: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
@@ -13,10 +14,11 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   token: null,
-  rol:null,
+  rol: null,
   organizacionId: null,
-  login: () => {},
-  logout: () => {},
+  cedula: null,
+  login: () => { },
+  logout: () => { },
   isAuthenticated: false,
   isLoading: true,
 });
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [rol, setRol] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [organizacionId, setOrganizacionId] = useState<number | null>(null);
+  const [cedula, setCedula] = useState<string | null>(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -34,8 +37,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         jwtDecode(storedToken);
         const decoded: any = jwtDecode(storedToken);
         setToken(storedToken);
-        setRol(decoded.rol); 
-        setOrganizacionId(decoded.organizacion_id ?? null); 
+        setRol(decoded.rol);
+        setOrganizacionId(decoded.organizacion_id ?? null);
+        setCedula(decoded.cedula ?? null);
       } catch (err) {
         localStorage.removeItem('token');
         setToken(null);
@@ -45,8 +49,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = (newToken: string) => {
-    localStorage.setItem('token', newToken);
-    setToken(newToken);
+    try {
+      const decoded: any = jwtDecode(newToken);
+      localStorage.setItem('token', newToken);
+      setToken(newToken);
+      setRol(decoded.rol ?? null);
+      setOrganizacionId(decoded.organizacion_id ?? null);
+      setCedula(decoded.cedula ?? null);
+    } catch (err) {
+      console.error('Error decodificando el token de inicio de sesión', err);
+      localStorage.removeItem('token');
+      setToken(null);
+      setRol(null);
+      setOrganizacionId(null);
+      setCedula(null);
+    }
   };
 
   const logout = () => {
@@ -55,7 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token,rol, organizacionId,  login, logout, isAuthenticated: !!token, isLoading }}>
+    <AuthContext.Provider value={{ token, rol, organizacionId, cedula, login, logout, isAuthenticated: !!token, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

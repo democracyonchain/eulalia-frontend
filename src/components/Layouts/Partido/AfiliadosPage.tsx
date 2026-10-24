@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { Download } from "lucide-react";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
-import { anularAfiliacion } from "@/services/partidoService";
-import type { Afiliado } from '../../../types/Afiiado';
+import { anularAfiliacion } from "@/services/afiliacionService";
 
 
 function AfiliadosPage() {
@@ -29,18 +28,18 @@ function AfiliadosPage() {
   };
 
   const handleAnular = async (id: number) => {
-  try {
-    await anularAfiliacion(id);
-    setLocalAfiliados((prev: Afiliado[]) =>
-      prev.map((a) =>
-        a.afiliacion_Id === id ? { ...a, estado: "Anulado" } : a
-      )
-    );
-    toast.success("Afiliación anulada correctamente");
-  } catch (error) {
-    toast.error("Error al anular afiliación");
-  }
-};
+    try {
+      await anularAfiliacion(id);
+      setLocalAfiliados((prev: any[]) =>
+        prev.map((a) =>
+          a.afiliacionId === id ? { ...a, estado: "Anulado" } : a
+        )
+      );
+      toast.success("Afiliación anulada correctamente");
+    } catch (error) {
+      toast.error("Error al anular afiliación");
+    }
+  };
 
   const handleDetalle = (id: number) => {
     toast.info(`Mostrando detalles de la afiliación (ID ${id})`);
@@ -90,11 +89,11 @@ function AfiliadosPage() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filtered.map((a: any, index: number) => (
-                <tr key={a.afiliacion_Id} className="hover:bg-gray-50">
+                <tr key={a.afiliacionId} className="hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm text-gray-700">{index + 1}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">{a.cedula}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{a.nombre}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{a.apellido}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{a.nombre || '-'}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{a.apellido || '-'}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
                     {new Date(a.fechaAfiliacion).toLocaleDateString("es-EC", {
                       year: "numeric",
@@ -105,13 +104,13 @@ function AfiliadosPage() {
                   <td className="px-4 py-2 text-sm text-gray-700">{a.estado}</td>
                   <td className="px-4 py-2 text-sm text-gray-700 space-x-2">
                     <button
-                      onClick={() => handleDetalle(a.afiliacion_Id)}
+                      onClick={() => handleDetalle(a.afiliacionId)}
                       className="text-blue-600 hover:underline text-sm"
                     >
                       Ver Detalles
                     </button>
                     <button
-                      onClick={() => handleAnular(a.afiliacion_Id)}
+                      onClick={() => handleAnular(a.afiliacionId)}
                       className="text-red-600 hover:underline text-sm"
                     >
                       Anular

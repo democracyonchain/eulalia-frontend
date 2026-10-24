@@ -12,3 +12,11 @@ export const fetchAnalistas = async (): Promise<Usuario[]> => {
   // Filtra los usuarios con rol "Analista" (rol_Id = 5)
   return res.data.filter((u: Usuario) => u.rol_Id === 5);
 };
+
+export const crearConCiudadano = async (data: any) => {
+  return await axiosInstance.post("/Usuario/crear-con-ciudadano", data);
+};
+
+export const crearUsuarioCiudadano = async (data: any) => {
+  return await axiosInstance.post("/Usuario/crear-usuario-ciudadano", data);
+};

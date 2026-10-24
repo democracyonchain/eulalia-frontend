@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchInformacionPartido } from "@/services/partidoService";
+import { fetchOrganizacionDetail } from "@/services/organizacionService";
 import { AuthContext } from "@/context/AuthContext";
 
 export interface InformacionPartidoForm {
@@ -29,8 +29,15 @@ export const useInformacionPartidoForm = () => {
       try {
         if (!organizacionId) return;
         setLoading(true);
-        const data = await fetchInformacionPartido(organizacionId);
-        setForm(data);
+        const data = await fetchOrganizacionDetail(organizacionId);
+        setForm({
+          nombre: data.nombre,
+          siglas: "", // No disponible en OrganizacionDto
+          fecha_fundacion: "", // No disponible en OrganizacionDto
+          direccion: `Provincia: ${data.codigoProvincia}, Cantón: ${data.codigoCanton}`, // Mapping available location data
+          telefono: "No disponible",
+          email: "No disponible",
+        });
       } catch (error) {
         console.error("❌ Error al cargar la información del partido:", error);
       } finally {
