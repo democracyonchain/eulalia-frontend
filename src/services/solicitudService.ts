@@ -31,5 +31,6 @@ export const fetchSolicitudes = async () => {
   return response.data;
 };
 export const actualizarEstadoSolicitud = async (solicitudId: number, estado: string) => {
-  return await axiosInstance.put(`/SolicitudOrganizacion/${solicitudId}/estado`, { estado });
-};  
+  const response = await axiosInstance.put(`/SolicitudOrganizacion/${solicitudId}/estado`, { estado });
+  return response.data;
+};

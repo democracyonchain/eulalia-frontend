@@ -6,6 +6,8 @@ const AdminLayout: React.FC = () => {
 
   const menuItems = [
     { name: "Inicio", path: "/admin", icon: "📋" },
+    { name: "Solicitudes de organizaciones", path: "/admin/solicitudes", icon: "📄" },
+    { name: "Billetera SSI de demostración", path: "/admin/wallet-demo", icon: "🔐" },
     { name: "Configuración", path: "/admin/configuracion", icon: "⚙️" },
     { name: "Gestión de Partidos", path: "/admin/partidos", icon: "🏛️" },
     { name: "Ciudadanos", path: "/admin/ciudadanos", icon: "🧑‍🤝‍🧑" },

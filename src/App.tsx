@@ -23,6 +23,11 @@ import AfiliadosPage from "./components/Layouts/Partido/AfiliadosPage";
 import DirectivaPage from "./components/Layouts/Partido/DirectivaPage";
 import DocumentosPage from "./components/Layouts/Partido/DocumentosPage";
 import ReportePartidoPage from "./components/Layouts/Partido/ReportesPage";
+import IdentidadPage from "./components/Layouts/Partido/IdentidadPage";
+import WalletPage from "./components/Layouts/Partido/WalletPage";
+import AdminLayout from "./components/Layouts/AdminLayout";
+import RequireRole from "./components/auth/RequireRole";
+import CneWalletDemoPage from "./pages/admin/CneWalletDemoPage";
 
 function App() {
   const { isAuthenticated, token, isLoading } = useContext(AuthContext);
@@ -36,7 +41,7 @@ function App() {
           rutaPorRol = "/admin";
           break;
         case "2":
-          rutaPorRol = "/organismo";
+          rutaPorRol = "/partido";
           break;
         case "3":
           rutaPorRol = "/partido";
@@ -63,13 +68,20 @@ function App() {
           <Route path="/solicitud-organizacion" element={<SolicitudOrganizacionPage />} />
 
           {/* Agrupamos las rutas protegidas que compartirán el layout */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminHomePage />} />
+            <Route path="solicitudes" element={<SolicitudesPage reviewer="CNE" />} />
+            <Route path="partidos" element={<SolicitudesPage reviewer="CNE" />} />
+            <Route path="wallet-demo" element={<RequireRole role="1"><CneWalletDemoPage /></RequireRole>} />
+          </Route>
           <Route element={<MainLayout />}>
-            <Route path="/admin" element={<AdminHomePage />} />
             <Route path="/ciudadano" element={<CiudadanoHomePage />} />
           </Route>
           {/* Sección Partido - Layout separado */}
           <Route path="/partido" element={<PartidoLayout />}>
             <Route index element={<PartidoHomePage />} />
+            <Route path="identidad" element={<IdentidadPage />} />
+            <Route path="wallet" element={<WalletPage />} />
             <Route path="informacion" element={<InformacionPage />} />
             <Route path="afiliados" element={<AfiliadosPage />} />
             <Route path="directiva" element={<DirectivaPage />} />

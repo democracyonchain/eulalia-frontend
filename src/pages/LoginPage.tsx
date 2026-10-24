@@ -22,7 +22,7 @@ function LoginPage() {
       login(token);
       setError('');
       if (decoded.rol === "1") navigate("/admin");
-      else if (decoded.rol === "2") navigate("/organismo");
+       else if (decoded.rol === "2") navigate("/partido");
       else if (decoded.rol === "3") navigate("/partido");
       else if (decoded.rol === "4") navigate("/ciudadano");
       else navigate("/");

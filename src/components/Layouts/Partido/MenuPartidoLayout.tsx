@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Users, FileText, FolderOpen, BarChart2, Info } from "lucide-react";
+import { Users, FileText, FolderOpen, BarChart2, Info, Fingerprint, WalletCards } from "lucide-react";
 
 const MenuPartidoLayout = () => {
   return (
@@ -50,6 +50,26 @@ const MenuPartidoLayout = () => {
             >
               <Info size={20} />
               <span>Información</span>
+            </NavLink>
+
+            <NavLink
+              to="/partido/identidad"
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-800 transition ${isActive ? "bg-blue-800 font-bold" : ""}`
+              }
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', borderRadius: '0.375rem', transition: 'background-color 0.2s', textDecoration: 'none', color: 'inherit' }}
+            >
+              <Fingerprint size={20} />
+              <span>Identidad Digital</span>
+            </NavLink>
+
+            <NavLink
+              to="/partido/wallet"
+              className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-800 transition ${isActive ? "bg-blue-800 font-bold" : ""}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', borderRadius: '0.375rem', transition: 'background-color 0.2s', textDecoration: 'none', color: 'inherit' }}
+            >
+              <WalletCards size={20} />
+              <span>Wallet de organización</span>
             </NavLink>
 
             <NavLink

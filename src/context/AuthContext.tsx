@@ -49,8 +49,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = (newToken: string) => {
-    localStorage.setItem('token', newToken);
-    setToken(newToken);
+    try {
+      const decoded: any = jwtDecode(newToken);
+      localStorage.setItem('token', newToken);
+      setToken(newToken);
+      setRol(decoded.rol ?? null);
+      setOrganizacionId(decoded.organizacion_id ?? null);
+      setCedula(decoded.cedula ?? null);
+    } catch (err) {
+      console.error('Error decodificando el token de inicio de sesión', err);
+      localStorage.removeItem('token');
+      setToken(null);
+      setRol(null);
+      setOrganizacionId(null);
+      setCedula(null);
+    }
   };
 
   const logout = () => {
